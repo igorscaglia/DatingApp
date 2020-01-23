@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Esse css é chamado porque ele está configurado no arquivo angular.json */
+
+/* Adicionar os estilos do bootstrap depois que ele foi instalado */
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
