@@ -13,5 +13,6 @@ namespace DatingApp.API.Data
 
         // Abordagem Code First
         public DbSet<Value> Values { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
