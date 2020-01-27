@@ -4,20 +4,32 @@ import { NgModule } from '@angular/core';
 // Componente nativo para fazer requisições http. Consumir uma web api restfull, por exemplo.
 import { HttpClientModule } from '@angular/common/http';
 
+// Componente nativo para usar o forms do angular
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
+import { NavComponent } from './nav/nav.component';
+import { AuthService } from './services/auth.service';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
+
 
 /* Pelo menos 1 componente do angular deve estar decorado com NgModule */
 @NgModule({
    declarations: [
       AppComponent,
-      ValueComponent
+      NavComponent,
+      HomeComponent,
+      RegisterComponent
    ],
    imports: [
       BrowserModule,
-      HttpClientModule
+      HttpClientModule,
+      FormsModule
    ],
-   providers: [],
+   providers: [
+      AuthService
+   ],
    bootstrap: [
       AppComponent
    ]

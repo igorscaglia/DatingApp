@@ -29,6 +29,7 @@ namespace DatingApp.API.Controllers
         // GET api/values
         // IActionResult retorna não só strings, como também respostas http, como por exemplo ok (200 Response)
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetValues()
         {
             var values = await _sqliteDataContext.Values.ToListAsync();
