@@ -17,6 +17,9 @@ using DatingApp.API.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using DatingApp.API.Helpers;
 
 namespace DatingApp.API
 {
@@ -85,6 +88,30 @@ namespace DatingApp.API
             {
                 // Exibe no navegador a exceção quando ocorrer
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(builder =>
+                {
+                    // Se houver uma exceção não tratada na aplicação vamos 
+                    // escrever ela direto no response do pipeline
+                    builder.Run(async httpContext =>
+                    {
+                        // Forçamos o erro 500 para a resposta
+                        httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+                        var error = httpContext.Features.Get<IExceptionHandlerFeature>();
+                        if (error != null)
+                        {
+                            // Nós adicionamos aqui o CORS manualmente pois estamos manipulando
+                            // o pipeline manualmente e o app.UseCors não funciona aqui
+                            httpContext.Response.AddApplicationError(error.Error.Message);
+                            
+                            // Escrevemos o erro que a aplicação pegou no response
+                            await httpContext.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
             }
 
             // Não vamos utilizar https portanto não vamos usar essa chamada
