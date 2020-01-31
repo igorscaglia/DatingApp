@@ -56,10 +56,10 @@ namespace DatingApp.API
             services.AddControllers();
             services.AddCors();
 
-            // Vamos adicionar o esquema de validação que queremos utilizar.
+            // Vamos adicionar o mecanismo de validação de autenticação que queremos utilizar.
             // É compatível com o método de autenticação que criamos, evidente.
             // Sem esse validação, o atributo Authorize funciona mesmo assim, contudo 
-            // a mensagem para o consumidor da API não é inteligível
+            // a mensagem para o consumidor da API não será inteligível
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {

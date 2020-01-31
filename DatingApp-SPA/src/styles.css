@@ -5,3 +5,11 @@
 /* Adicionar os estilos do bootstrap depois que ele foi instalado */
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
+
+/* Adicionar os estilos do alertify */
+@import '../node_modules/alertifyjs/build/css/alertify.min.css';
+/* Adicionar os estilos do alertify de acordo com engine css */
+@import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
+
+/* Adicionar o estilo do tema do bootswatch */
+@import '../node_modules/bootswatch/dist/pulse/bootstrap.min.css';

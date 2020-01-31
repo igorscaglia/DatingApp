@@ -1,9 +1,13 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+
+  <!-- Um novo container aqui dá mais espaço para os elementos internos -->
+  <div class="container">
+
   <a class="navbar-brand" href="#">Dating App</a>
 
     <!-- O bootstrap usa o jquery - nós vamos tirar o jquery em detrimento do próprio angular -->
 
-    <ul class="navbar-nav mr-auto">
+    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link" href="#">Matches 
           <span class="sr-only">(current)</span>
@@ -15,21 +19,23 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Messages</a>
       </li>
-
-      <li class="nav-item">
-        <a class="nav-link" (click)="logout()">Logout</a>
-      </li>
     </ul>
 
-    <div *ngIf="loggedIn()" class="dropdown">
-      <a class="dropdown-toggle text-light">
-        Welcome User
+    <div *ngIf="loggedIn()" class="dropdown" dropdown>
+
+      <a class="dropdown-toggle text-light" dropdownToggle>
+        <!-- 
+          Usamos operador elvis ? pois unique_name só existe quando é efetuado o login
+          O titlecase deixa o primeiro caractere da string à esquerda (unique_name) em maiúsculo
+        -->
+        Welcome {{authService.decodedToken?.unique_name | titlecase}}
       </a>
 
-      <div class="dropdown-menu">
+      <!-- mt3 margin top 3 -->
+      <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Edit Profile</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i> Logout</a>
+        <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
       </div>
     </div>
 
@@ -45,6 +51,6 @@
       <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
     </form>
 
-
+  </div>
   
 </nav>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 // Decorado com Injectable porque serviços não recebem injeções automáticas
 // iguais componentes (por isso componentes não precisam ser decorados)
@@ -10,6 +11,10 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   baseUrl = 'http://localhost:5000/api/auth/';
+  // Usaremos a library Angular JWT para validar a token
+  jwtHelper = new JwtHelperService();
+  // Contém a token decodificada, onde consta o nome do usuário em unique_name
+  decodedToken: any;
 
 constructor(private http: HttpClient) { }
 
@@ -21,6 +26,8 @@ constructor(private http: HttpClient) { }
         if (userToken) {
           // armazenamos a token do usuário localmente
           localStorage.setItem('userToken', userToken.token);
+          this.decodedToken = this.jwtHelper.decodeToken(userToken.token);
+          console.log(this.decodedToken);
         }
       })
     );
@@ -29,4 +36,11 @@ constructor(private http: HttpClient) { }
   register(model: any) {
     return this.http.post(this.baseUrl + 'register', model);
   }
+
+  loggedIn() {
+    const token = localStorage.getItem('userToken');
+    // Se não estiver expirada a token então estará logado o usuário
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+
 }

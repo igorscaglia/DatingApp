@@ -9,6 +9,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         req: import('@angular/common/http').HttpRequest<any>,
         next: import('@angular/common/http').HttpHandler
     ): import('rxjs').Observable<import('@angular/common/http').HttpEvent<any>> {
+
         return next.handle(req).pipe(
             catchError(error => {
                 if (error.status === 401) {
@@ -32,16 +33,16 @@ export class ErrorInterceptor implements HttpInterceptor {
 
                     // Pegar os erros de validação da Web Api
                     // errors tem que ser do tipo object pois vamos percorrer seus filhos
-                    if (serverError && typeof serverError === 'object') {
-                        for (const key in serverError) {
-                            if (serverError[key]) {
-                                modalStateErrors += serverError[key] + '\n';
+                    if (serverError.errors && typeof serverError.errors === 'object') {
+                        for (const key in serverError.errors) {
+                            if (serverError.errors[key]) {
+                                modalStateErrors += serverError.errors[key] + '\n';
                             }
                         }
                     }
 
                     // Todos os erros são throw porque os componentes vão repassar os erros que vem da web api
-                    return throwError(serverError || modalStateErrors || 'Unknown server error.');
+                    return throwError(modalStateErrors || serverError || 'Erro desconhecido no servidor.');
                 }
             })
         );

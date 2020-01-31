@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { AlertifyService } from '../services/Alertify.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,32 +10,30 @@ import { AuthService } from '../services/auth.service';
 export class NavComponent implements OnInit {
 
   // Vamos usar angular forms. Angular forms suporta 2 way binding.
-
-  // Aqui vai ficar o usuário e a senha
+  // Aqui vai ficar o usuário e a senha que será populado pelo form
   model: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService,
+              private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
 
   login() {
-    this.authService.login(this.model).subscribe( next => {
-      console.log('Login efetuado com sucesso.');
+    this.authService.login(this.model).subscribe(next => {
+      this.alertify.success('Login efetuado com sucesso.');
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
 
   loggedIn() {
-    const token = localStorage.getItem('userToken');
-    // se for vazio ou nulo retorna falso
-    return !!token;
+    return this.authService.loggedIn();
   }
 
   logout() {
     localStorage.removeItem('userToken');
-    console.log('Logged out.');
+    this.alertify.message('Logged out.');
   }
 
 }

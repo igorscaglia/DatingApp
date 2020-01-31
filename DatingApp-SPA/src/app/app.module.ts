@@ -12,8 +12,11 @@ import { NavComponent } from './nav/nav.component';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
+import { ErrorInterceptorProvider } from './services/error.interceptor';
 
+// Componentes NGX Bootstrap
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 /* Pelo menos 1 componente do angular deve estar decorado com NgModule */
 @NgModule({
@@ -26,7 +29,9 @@ import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
    imports: [
       BrowserModule,
       HttpClientModule,
-      FormsModule
+      FormsModule,
+      BrowserAnimationsModule,
+      BsDropdownModule.forRoot()
    ],
    providers: [
       AuthService,
