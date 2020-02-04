@@ -20,6 +20,7 @@ using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using DatingApp.API.Helpers;
+using Pomelo.EntityFrameworkCore.MySql.Storage;
 
 namespace DatingApp.API
 {
@@ -47,8 +48,12 @@ namespace DatingApp.API
             var authConfiguration = authConfigurationSection.Get<AuthConfiguration>();
 
             // Para injeção dos contextos de banco de dados
-            services.AddDbContext<SqlServerDataContext>(x => x.UseSqlServer(this.Configuration.GetConnectionString("SqlServerConnectionString")));
-            services.AddDbContext<SqliteDataContext>(x => x.UseSqlite(this.Configuration.GetConnectionString("SqliteConnectionString")));
+            // services.AddDbContext<DefaultDbContext>(x => x.UseSqlite(this.Configuration.GetConnectionString("SqliteConnectionString")));
+            services.AddDbContext<DefaultDbContext>(x => x.UseMySql(this.Configuration.GetConnectionString("MySQLConnectionString"),
+            options =>
+            {
+                options.ServerVersion(new ServerVersion(new Version(8, 0, 19)));
+            }));
 
             // No AddScoped o objeto é criado 1 vez a cada request
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -106,7 +111,7 @@ namespace DatingApp.API
                             // Nós adicionamos aqui o CORS manualmente pois estamos manipulando
                             // o pipeline manualmente e o app.UseCors não funciona aqui
                             httpContext.Response.AddApplicationError(error.Error.Message);
-                            
+
                             // Escrevemos o erro que a aplicação pegou no response
                             await httpContext.Response.WriteAsync(error.Error.Message);
                         }

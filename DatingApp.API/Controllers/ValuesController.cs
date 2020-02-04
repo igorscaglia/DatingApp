@@ -18,9 +18,9 @@ namespace DatingApp.API.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> _logger;
-        private readonly SqliteDataContext _sqliteDataContext;
+        private readonly DefaultDbContext _sqliteDataContext;
 
-        public ValuesController(ILogger<ValuesController> logger, SqliteDataContext sqliteDataContext)
+        public ValuesController(ILogger<ValuesController> logger, DefaultDbContext sqliteDataContext)
         {
             _sqliteDataContext = sqliteDataContext;
             _logger = logger;

@@ -8,9 +8,9 @@ namespace DatingApp.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly SqliteDataContext _context;
+        private readonly DefaultDbContext _context;
 
-        public AuthRepository(SqliteDataContext context)
+        public AuthRepository(DefaultDbContext context)
         {
             this._context = context;
         }

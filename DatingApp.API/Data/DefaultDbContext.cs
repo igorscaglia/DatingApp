@@ -5,11 +5,11 @@ namespace DatingApp.API.Data
 {
     // No Core > 3.0 (No Microsoft.AspNetCore.App) foram removidos os assemblies do EF. 
     // A referência deve ser feita manualmente pelo Nuget.
-    public class SqliteDataContext : DbContext
+    public class DefaultDbContext : DbContext
     {
-        protected SqliteDataContext() { }
+        protected DefaultDbContext() { }
 
-        public SqliteDataContext(DbContextOptions<SqliteDataContext> options) : base(options) { }
+        public DefaultDbContext(DbContextOptions<DefaultDbContext> options) : base(options) { }
 
         // Abordagem Code First
         public DbSet<Value> Values { get; set; }
