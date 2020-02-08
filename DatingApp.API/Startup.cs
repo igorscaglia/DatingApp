@@ -21,6 +21,8 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using DatingApp.API.Helpers;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
+using Microsoft.OpenApi.Models;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -57,16 +59,30 @@ namespace DatingApp.API
 
             // No AddScoped o objeto é criado 1 vez a cada request
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
 
-            services.AddControllers();
+            // Adicionar o AutoMapper - IMapper
+            services.AddAutoMapper(typeof(DatingRepository).Assembly);
+
+            // Adicionar NewtonsoftJson features
+            services.AddControllers().AddNewtonsoftJson(options => {
+                // Vamos ignorar o erro abaixo 
+                // Newtonsoft.Json.JsonSerializationException: Self referencing loop detected for property 'user' with type 'DatingApp.API.Models.User'. Path 'photos[0]'.
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+            // Permitir CORS
             services.AddCors();
 
             // Vamos adicionar o mecanismo de validação de autenticação que queremos utilizar.
             // É compatível com o método de autenticação que criamos, evidente.
             // Sem esse validação, o atributo Authorize funciona mesmo assim, contudo 
             // a mensagem para o consumidor da API não será inteligível
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
@@ -76,6 +92,41 @@ namespace DatingApp.API
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Dating API", Version = "v1" });
+
+                // Abaixo para o swagger tratar a nossa token
+
+                //First we define the security scheme
+                c.AddSecurityDefinition("Bearer", //Name the security scheme
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme.",
+                        Type = SecuritySchemeType.Http, //We set the scheme type to http since we're using bearer authentication
+                        Scheme = "bearer" //The name of the HTTP Authorization scheme to be used in the Authorization header. In this case "bearer".
+                    }
+                );
+
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement()
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Id = "Bearer", //The name of the previously defined security scheme.
+                                    Type = ReferenceType.SecurityScheme
+                                }
+                            }, new List<string>()
+                        }
+                    }
+                );
+
             });
         }
 
@@ -118,6 +169,20 @@ namespace DatingApp.API
                     });
                 });
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Dating API V1");
+
+                // To serve the Swagger UI at the app's root (http://localhost:<port>/)
+                c.RoutePrefix = string.Empty;
+            });
+
 
             // Não vamos utilizar https portanto não vamos usar essa chamada
             // app.UseHttpsRedirection();
