@@ -37,6 +37,28 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "docker run MySql 8.0.19",
+            "command": "docker",
+            "type": "shell",
+            "args": [
+                "run",
+                "-d",
+                "--rm",
+                "--name",
+                "mysql8019",
+                "-v",
+                "mysql8019prod:/var/lib/mysql",
+                "-p",
+                "3306:3306",
+                "-e",
+                "MYSQL_ROOT_PASSWORD=M1yS2q3l4",
+                "-e",
+                "bind-address=0.0.0.0",
+                "mysql:8.0.19"
+            ],
+            "problemMatcher": "$msCompile"
+        },
     ]
 }

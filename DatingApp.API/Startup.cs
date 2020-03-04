@@ -190,13 +190,13 @@ namespace DatingApp.API
             // No Core 2.2 Era app.UseMvc() no lugar de routing e endpoints
             app.UseRouting();
 
+            // Tem que ficar depois do UseRounting e antes do UseEndpoints
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             // Essa chamada tem que ficar antes do UseAuthorization
             app.UseAuthentication();
 
             app.UseAuthorization();
-
-            // Tem que ficar depois do UseRounting e antes do UseEndpoints
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {

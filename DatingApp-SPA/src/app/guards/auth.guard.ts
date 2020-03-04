@@ -23,6 +23,7 @@ export class AuthGuard implements CanActivate {
 
     // Mensagem para o usuário
     this.alertify.error('Only authenticate members can view this area.');
+
     // Volta para a home
     this.router.navigate(['/home']);
     return false;

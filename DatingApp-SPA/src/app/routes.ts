@@ -4,6 +4,9 @@ import { MembersComponent } from './members/members.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberDetailResolver } from './resolvers/member-detail.resolver';
+import { MembersResolver } from './resolvers/members.resolver';
 
 // Aqui vai conter todas as rotas da aplicação.
 // Esse arquivo foi gerado manualmente.
@@ -18,7 +21,10 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'members', component: MembersComponent },
+            { path: 'members', component: MembersComponent,
+                resolve: {resolvedUsers: MembersResolver} },
+            { path: 'members/:id', component: MemberDetailComponent,
+                resolve: {resolvedUser: MemberDetailResolver} },
             { path: 'messages', component: MessagesComponent },
             { path: 'lists', component: ListsComponent }
         ]

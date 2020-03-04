@@ -1,0 +1,42 @@
+
+/* Imagem saltar */
+
+.card:hover img{
+    transform: scale(1.2, 1.2);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+    opacity: 0.9;
+}
+
+.card img{
+    transform: scale(1.0, 1.0);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+}
+
+.card-img-wrapper {
+    overflow: hidden; /* Imagem não sair para fora desse container */
+    position: relative; /* para não ficar em cima do div dos botões */
+}
+
+.member-icons {
+    position: absolute;
+    bottom: -10%; /* faz com que os botões venham debaixo pois está negativo */
+    left: 0;
+    right: 0;
+    margin-right: auto; /* para manter centralizado */
+    margin-left: auto; /* para manter centralizado */
+    opacity: 0;
+}
+
+/* botões aparecerem no hover de seu container (card-img-wrapper) */
+.card-img-wrapper:hover .member-icons{
+    bottom: 0;
+    opacity: 1;
+}
+
+.animate {
+    transition: all 0.3s ease-in-out; /* botões deslizam de baixo para cima */
+}
+
+/* Fim Imagem saltar */

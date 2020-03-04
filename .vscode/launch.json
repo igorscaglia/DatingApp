@@ -12,6 +12,15 @@
            "url": "http://localhost:4200",
            "webRoot": "${workspaceFolder}/DatingApp-SPA/"
        },
+       {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach to Angular Chrome",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/DatingApp-SPA/",
+            "port": 9222,
+            "sourceMaps": true
+        },
         {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",

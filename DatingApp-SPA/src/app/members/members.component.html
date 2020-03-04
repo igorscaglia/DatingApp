@@ -1,3 +1,10 @@
-<p>
-  members works!
-</p>
+<div class="container mt-4">
+  <div class="row">
+   <!--large = 6 em cada coluna
+    medium = 4 em cada coluna
+    small = 2 em cada coluna-->
+    <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
+      <app-member-card [user]="user"></app-member-card>
+    </div>
+  </div>
+</div>

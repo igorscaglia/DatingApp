@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { AlertifyService } from '../services/Alertify.service';
 import { Router } from '@angular/router';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 @Component({
   selector: 'app-nav',
@@ -16,7 +17,8 @@ export class NavComponent implements OnInit {
 
   constructor(public authService: AuthService,
               private alertify: AlertifyService,
-              private router: Router) { }
+              private router: Router,
+              private errorHandler: ErrorHandlerService) { }
 
   ngOnInit() {
   }
@@ -25,7 +27,7 @@ export class NavComponent implements OnInit {
     this.authService.login(this.model).subscribe(next => {
       this.alertify.success('Login efetuado com sucesso.');
     }, error => {
-      this.alertify.error(error);
+      this.alertify.error(this.errorHandler.handle(error));
     }, () => {
       this.router.navigate(['/members']);
     });

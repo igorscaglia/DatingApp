@@ -2,8 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// Essa classe é criada junto com a aplicação inicial
+// Podemos colocar nela as constantes de ambiente da aplicação
+
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://localhost:5000/api/'
 };
 
 /*
