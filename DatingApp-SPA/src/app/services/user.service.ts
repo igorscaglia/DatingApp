@@ -16,18 +16,24 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class UserService {
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.apiUrl + 'users';
 
   constructor(private http: HttpClient) { }
 
   // Recupera a lista de usuário da api
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'users');
+    return this.http.get<User[]>(this.baseUrl);
     // return this.http.get<User[]>(this.baseUrl + 'users', httpOptions);
   }
 
   // Recupera um usuário pelo seu id
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(this.baseUrl + 'users/' + id);
+    return this.http.get<User>(this.baseUrl + '/' + id);
   }
+
+  // Atualiza um usuário pelo seu id
+  updateUser(id: number, user: User) {
+    return this.http.put(this.baseUrl + '/' + id, user);
+  }
+
 }

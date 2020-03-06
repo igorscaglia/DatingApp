@@ -19,7 +19,7 @@ export class MembersResolver implements Resolve<User[]> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
 
-        // Não precisamos dar o subscribe pois o método já faz isso, então usamos o pipe
+        // Não precisamos dar o subscribe pois o método já retorna um Observable, então usamos o pipe
         return this.userService.getUsers().pipe(
             catchError(error => {
                 this.alertify.error(this.errorHandler.handle(error));
@@ -28,5 +28,4 @@ export class MembersResolver implements Resolve<User[]> {
             })
         );
     }
-
 }

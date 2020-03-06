@@ -7,6 +7,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './resolvers/member-detail.resolver';
 import { MembersResolver } from './resolvers/members.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './resolvers/member-edit.resolver';
+import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 
 // Aqui vai conter todas as rotas da aplicação.
 // Esse arquivo foi gerado manualmente.
@@ -15,19 +18,43 @@ import { MembersResolver } from './resolvers/members.resolver';
 // // localhost:4200/members... se tivesse algo no path seria /xxxmembers
 
 export const appRoutes: Routes = [
-    { path: '', component: HomeComponent },
+    {
+        path: '',
+        component: HomeComponent
+    },
     {
         path: '',
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'members', component: MembersComponent,
-                resolve: {resolvedUsers: MembersResolver} },
-            { path: 'members/:id', component: MemberDetailComponent,
-                resolve: {resolvedUser: MemberDetailResolver} },
-            { path: 'messages', component: MessagesComponent },
-            { path: 'lists', component: ListsComponent }
+            {
+                path: 'members',
+                component: MembersComponent,
+                resolve: { resolvedUsers: MembersResolver }
+            },
+            {
+                path: 'members/:id',
+                component: MemberDetailComponent,
+                resolve: { resolvedUser: MemberDetailResolver }
+            },
+            {
+                path: 'member/edit',
+                component: MemberEditComponent,
+                resolve: { resolvedUser: MemberEditResolver },
+                canDeactivate: [PreventUnsavedChangesGuard]
+            },
+            {
+                path: 'messages',
+                component: MessagesComponent
+            },
+            {
+                path: 'lists',
+                component: ListsComponent
+            }
         ]
     },
-    { path: '**', redirectTo: '', pathMatch: 'full' }
+    {
+        path: '**',
+        redirectTo: '', pathMatch: 'full'
+    }
 ];

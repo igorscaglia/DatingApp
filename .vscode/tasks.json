@@ -60,5 +60,34 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "build test API",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/DatingApp.API.Tests/DatingApp.API.Tests.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:Summary",
+                "--nologo"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test API",
+            "command": "dotnet",
+            "type": "process",
+            "dependsOn":[
+                "build test API"
+            ],
+            "args": [
+                "test",
+                "${workspaceFolder}/DatingApp.API.Tests/DatingApp.API.Tests.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:Summary",
+                "--nologo"
+            ],
+            "problemMatcher": "$msCompile"
+        }
     ]
 }

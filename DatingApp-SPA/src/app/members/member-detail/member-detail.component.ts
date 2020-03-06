@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
-import { AlertifyService } from 'src/app/services/Alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 
@@ -15,12 +13,9 @@ export class MemberDetailComponent implements OnInit {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(private userService: UserService,
-              private alertify: AlertifyService,
-              private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-
     this.activatedRoute.data.subscribe(data => {
       // resolvedUser é o nome do parâmetro criado em routes.ts
       this.user = data.resolvedUser;
@@ -38,7 +33,6 @@ export class MemberDetailComponent implements OnInit {
 
     // Inicia sem imagens
     this.galleryImages = this.loadImages();
-
   }
 
   loadImages() {
@@ -63,5 +57,4 @@ export class MemberDetailComponent implements OnInit {
 
     return imageUrls;
   }
-
 }

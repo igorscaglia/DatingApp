@@ -74,13 +74,13 @@ namespace DatingApp.API.Migrations
                     b.Property<string>("Introduction")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("KnowAs")
+                    b.Property<string>("KnownAs")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("LokingFor")
+                    b.Property<string>("LookingFor")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<byte[]>("PasswordHash")
