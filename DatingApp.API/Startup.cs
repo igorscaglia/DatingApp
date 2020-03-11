@@ -45,8 +45,10 @@ namespace DatingApp.API
             // Temos que usar o IOptions lá no controlador
             services.AddOptions();
             var authConfigurationSection = Configuration.GetSection("AuthConfiguration");
+            var cloudinaryConfigurationSection = Configuration.GetSection("CloudinaryConfiguration");
 
             services.Configure<AuthConfiguration>(authConfigurationSection);
+            services.Configure<CloudinaryConfiguration>(cloudinaryConfigurationSection);
             var authConfiguration = authConfigurationSection.Get<AuthConfiguration>();
 
             // Para injeção dos contextos de banco de dados

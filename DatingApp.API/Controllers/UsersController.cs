@@ -20,7 +20,7 @@ namespace DatingApp.API.Controllers
         private readonly IDatingRepository _datingRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;
-        public UsersController(IDatingRepository datingRepository, IMapper mapper, 
+        public UsersController(IDatingRepository datingRepository, IMapper mapper,
             ILogger<UsersController> logger)
         {
             _logger = logger;

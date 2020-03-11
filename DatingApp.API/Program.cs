@@ -47,11 +47,15 @@ namespace DatingApp.API
 
             // Ocorre aqui a leitura do appsettings.json
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    // A classe Startup.cs é usada como parâmetro de inicialização 
-                    // para a construção do serviço web
-                    webBuilder.UseStartup<Startup>();
-                });
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.AddJsonFile("cloudinary.json", optional: false, reloadOnChange: true);
+            })
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                // A classe Startup.cs é usada como parâmetro de inicialização 
+                // para a construção do serviço web
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }
