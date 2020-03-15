@@ -13,6 +13,7 @@ import { appRoutes } from './routes';
 
 import { AppComponent } from './app.component';
 
+// Componentes do aplicativo
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -22,6 +23,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 // Componentes NGX Bootstrap
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,16 +39,19 @@ import { JwtModule } from '@auth0/angular-jwt';
 // Componente interceptador de erros
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
+// Componente NG2 File Upload
+import { FileUploadModule } from 'ng2-file-upload';
+
 // Para passarmos a token em todas as requisições automaticamente
 export function tokenGetter() {
    return localStorage.getItem('userToken');
 }
 
 // Workaround para o NGX Gallery
-export class CustomHammerConfig extends HammerGestureConfig  {
+export class CustomHammerConfig extends HammerGestureConfig {
    overrides = {
-       pinch: { enable: false },
-       rotate: { enable: false }
+      pinch: { enable: false },
+      rotate: { enable: false }
    };
 }
 
@@ -62,7 +67,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MessagesComponent,
       MemberCardComponent,
       MemberDetailComponent,
-      MemberEditComponent
+      MemberEditComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
@@ -79,7 +85,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
             blacklistedRoutes: ['localhost:5000/api/auth']
          }
       }),
-      NgxGalleryModule
+      NgxGalleryModule,
+      FileUploadModule
    ],
    providers: [
       ErrorInterceptor,

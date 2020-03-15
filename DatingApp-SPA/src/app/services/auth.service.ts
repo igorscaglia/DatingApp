@@ -49,4 +49,8 @@ constructor(private http: HttpClient) { }
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  getToken() {
+    return localStorage.getItem('userToken');
+  }
+
 }

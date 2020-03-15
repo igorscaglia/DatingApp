@@ -28,8 +28,12 @@ namespace DatingApp.API.Controllers
         private readonly IDatingRepository _datingRepository;
         private readonly Cloudinary _cloudinary;
 
-        public PhotosController(IDatingRepository datingRepository, IMapper mapper,
-            ILogger<PhotosController> logger, IOptions<CloudinaryConfiguration> cloudinaryConfiguration)
+        public PhotosController(
+            IDatingRepository datingRepository,
+            IMapper mapper,
+            ILogger<PhotosController> logger, 
+            IOptions<CloudinaryConfiguration> cloudinaryConfiguration
+        )
         {
             _logger = logger;
             _mapper = mapper;
@@ -57,6 +61,7 @@ namespace DatingApp.API.Controllers
         [HttpPost] // A rota desse action está no topo
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Created)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> AddPhotoForUser(int userId, [FromForm]PhotoForCreation photoForCreation)
         {
             // Verificamos se o usuário que está efetuando a edição é o mesmo que está autenticado na API
@@ -69,7 +74,7 @@ namespace DatingApp.API.Controllers
             var uploadResult = new ImageUploadResult();
 
             // Se houver um arquivo para upload
-            if (file.Length > 0)
+            if (file != null && file.Length > 0)
             {
                 using (var stream = file.OpenReadStream())
                 {
@@ -93,9 +98,11 @@ namespace DatingApp.API.Controllers
 
             var userFromRepo = await _datingRepository.GetUser(userId);
 
-            // Se houver um erro no servidor vamos propagar ele
+            // Se houver um erro no Cloudinary vamos propagar ele
             if (uploadResult.Error != null)
+            {
                 throw new Exception(uploadResult.Error.Message);
+            }
 
             var photo = _mapper.Map<Photo>(photoForCreation);
 
@@ -109,8 +116,12 @@ namespace DatingApp.API.Controllers
             // Salvar a photo no banco
             if (await _datingRepository.SaveAll())
             {
+                // Mapeamos para não passar o usuário da FK também!
+                var photoDetailed = _mapper.Map<PhotoForDetailed>(photo);
+                
                 // AtAction não precisamos dar o nome para a rota (AtRoute) (tá no escopo)
-                return CreatedAtAction(nameof(GetPhoto), new { id = photo.Id, userId = userId }, "Photo created.");
+                // Passamos a foto também
+                return CreatedAtAction(nameof(GetPhoto), new { id = photo.Id, userId = userId }, photoDetailed);
             }
             else
             {
