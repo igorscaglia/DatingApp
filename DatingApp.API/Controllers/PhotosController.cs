@@ -31,7 +31,7 @@ namespace DatingApp.API.Controllers
         public PhotosController(
             IDatingRepository datingRepository,
             IMapper mapper,
-            ILogger<PhotosController> logger, 
+            ILogger<PhotosController> logger,
             IOptions<CloudinaryConfiguration> cloudinaryConfiguration
         )
         {
@@ -118,7 +118,7 @@ namespace DatingApp.API.Controllers
             {
                 // Mapeamos para não passar o usuário da FK também!
                 var photoDetailed = _mapper.Map<PhotoForDetailed>(photo);
-                
+
                 // AtAction não precisamos dar o nome para a rota (AtRoute) (tá no escopo)
                 // Passamos a foto também
                 return CreatedAtAction(nameof(GetPhoto), new { id = photo.Id, userId = userId }, photoDetailed);
@@ -128,6 +128,58 @@ namespace DatingApp.API.Controllers
                 string errorMsg = "Failed adding photo on server.";
                 _logger.LogError(errorMsg);
                 throw new Exception(errorMsg);
+            }
+        }
+
+        [HttpPost("{photoId}/setMain")] // A rota desse action está no topo
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> SetMainPhoto(int userId, int photoId)
+        {
+            // Verificamos se o usuário que está efetuando a edição é o mesmo que está autenticado na API
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var user = await _datingRepository.GetUser(userId);
+
+            // Se a foto não existir
+            if (!user.Photos.Any(p => p.Id == photoId))
+            {
+                return NotFound(photoId);
+            }
+            else
+            {
+                var photoFromRepo = await _datingRepository.GetPhoto(photoId);
+
+                // Se a foto já não for a principal
+                if (!photoFromRepo.IsMain)
+                {
+                    // vamos pegar a principal para configurar como false já que outra será a principal
+                    var mainPhoto = await _datingRepository.GetMainPhotoForUser(userId);
+                    mainPhoto.IsMain = false;
+
+                    // A nova foto informada é a principal agora
+                    photoFromRepo.IsMain = true;
+
+                    // Save it on database
+                    if (await _datingRepository.SaveAll())
+                    {
+                        return Ok();
+                    }
+                    else
+                    {
+                        string errorMsg = "Failed setting user new main photo.";
+                        _logger.LogError(errorMsg);
+                        throw new Exception(errorMsg);
+                    }
+                }
+                else
+                {
+                    return Ok($"Photo Id {photoId} is the main photo already.");
+                }
             }
         }
     }

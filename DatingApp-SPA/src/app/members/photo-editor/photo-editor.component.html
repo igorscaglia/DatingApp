@@ -2,12 +2,16 @@
   <div class="col-sm-2" *ngFor="let photo of photos">
     <img src="{{photo.url}}" alt="{{photo.description}}" class="img-thumbnail p-1">
     <div class="text-center">
-      <button type="button" class="btn btn-sm">Main</button>
+
+      <button type="button" class="btn btn-sm mr-1" 
+        (click)="setMainPhoto(photo)" 
+        [ngClass]="photo.isMain ? 'btn-success active' : 'btn-secondary'"
+        [disabled]="photo.isMain">Main</button>
       <button type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button>
+      
     </div>
   </div>
 </div>
-
 
 <div class="row mt-3">
  
@@ -15,6 +19,7 @@
 
       <h3>Add Photos</h3>
 
+    <!-- O estilo nv-file-over vai ser dinâmico aqui graças ao ngClass -->
       <div ng2FileDrop
            [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
            (fileOver)="fileOverBase($event)"

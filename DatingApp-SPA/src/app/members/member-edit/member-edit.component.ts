@@ -49,4 +49,14 @@ export class MemberEditComponent implements OnInit {
     // Reset no form mas mantendo o que já foi editado
     this.editForm.reset(this.user);
   }
+
+  memberPhotoChangedEventHandler(event: any) {
+
+    // Atualizamos a photo quando ela for alterada em photo-editor
+    this.updateMainPhoto(event);
+  }
+
+  updateMainPhoto(photoUrl: string) {
+    this.user.photoUrl = photoUrl;
+  }
 }
