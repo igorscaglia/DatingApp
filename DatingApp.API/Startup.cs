@@ -63,6 +63,9 @@ namespace DatingApp.API
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
 
+            // Adicionar o Action Filter de tracking do usuário
+            services.AddScoped<UserActivityActionFilter>();
+
             // Adicionar o AutoMapper - IMapper
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
 
